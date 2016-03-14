@@ -1,26 +1,11 @@
-FROM ubuntu:14.04
+FROM fedora:23
 MAINTAINER Roland Moriz <roland@moriz.de>
 
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+RUN dnf install wget -y
 
-RUN \
-  apt-get update && \
-  apt-get -y upgrade && \
-  apt-get install -y --no-install-recommends wget ca-certificates rsync && \
-  apt-get install -y --no-install-recommends libopenal1 mono-runtime libmono-corlib2.0-cil libmono-system-core4.0-cil \
-                                             libmono-system-numerics4.0-cil libmono-system-runtime-serialization4.0-cil \
-                                             libmono-system-xml-linq4.0-cil libmono-system-drawing4.0-cil libmono-system-windows-forms4.0-cil \
-                                             libsdl2-2.0-0 \
-                                             libfreetype6 libasound2 libgl1-mesa-glx libgl1-mesa-dri xdg-utils zenity liblua5.1  && \
-  rm -rf /var/lib/apt/lists/* \
-  rm -rf /var/cache/apt/archives/*
-
-# http://www.openra.net/download/
-RUN \
-  cd /tmp && \
-  wget https://github.com/OpenRA/OpenRA/releases/download/release-20150424/openra_release.20150424_all.deb && \
-  dpkg -i openra_release.20150424_all.deb && \
-  rm /tmp/openra_release.20150424_all.deb
+RUN cd /etc/yum.repos.d/ && \
+    wget http://download.opensuse.org/repositories/games:openra/Fedora_23/games:openra.repo && \
+    dnf install openra -y
 
 RUN useradd -d /home/openra -m -s /sbin/nologin openra
 RUN chown -R openra:openra /usr/lib/openra
