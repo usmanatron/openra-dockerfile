@@ -1,7 +1,7 @@
 FROM fedora:23
 MAINTAINER Roland Moriz <roland@moriz.de>
 
-RUN dnf install wget -y
+RUN dnf install wget rsync -y
 
 RUN cd /etc/yum.repos.d/ && \
     wget http://download.opensuse.org/repositories/games:openra/Fedora_23/games:openra.repo && \
